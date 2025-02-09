@@ -18,15 +18,46 @@ struct ContentView: View {
                                  73, 79, 83, 89, 97
     ]
     
+    @State
+    private var shownNumber: String?
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack(alignment: .top) {
+            VStack {
+                Text("Prime Number Game")
+                    .font(.largeTitle)
+            }
+            .padding()
         }
-        .padding()
+                
+        VStack {
+            Button(action: {
+                shownNumber = generateNumber()
+            }, label: {
+                Text("Start the Game")
+            })
+        }
+        
+        VStack {
+            // Display the number to guess here.
+            Text(shownNumber ?? "")
+        }
+
+        
+
+        
+//        VStack {
+//            Image(systemName: "globe")
+//                .imageScale(.large)
+//                .foregroundStyle(.tint)
+//            Text("Hello, world!")
+//        }
+//        .padding()
     }
+}
+
+func generateNumber() -> String {
+    return "\(Int.random(in: 1...100))"
 }
 
 #Preview {
