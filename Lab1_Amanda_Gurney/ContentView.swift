@@ -29,7 +29,8 @@ struct ContentView: View {
             }
             .padding()
         }
-                
+        
+        // Show button for starting the game.
         VStack {
             Button(action: {
                 shownNumber = generateNumber()
@@ -42,20 +43,10 @@ struct ContentView: View {
             // Display the number to guess here.
             Text(shownNumber ?? "")
         }
-
-        
-
-        
-//        VStack {
-//            Image(systemName: "globe")
-//                .imageScale(.large)
-//                .foregroundStyle(.tint)
-//            Text("Hello, world!")
-//        }
-//        .padding()
     }
 }
 
+// Generate number to guess.
 func generateNumber() -> String {
     return "\(Int.random(in: 1...100))"
 }
