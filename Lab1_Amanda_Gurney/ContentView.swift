@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
+    // Prime numbers used in the game (between 1-100).
     @State
     private var primeNumbers: [String] = [
                                  "2", "3", "5", "7", "11",
@@ -18,15 +19,19 @@ struct ContentView: View {
                                  "73", "79", "83", "89", "97"
     ]
     
+    // Number displayed on the screen.
     @State
     private var shownNumber: String = generateNumber()
+    // Attempts counter.
     @State
     private var attempts = 0
+    // Correct answers counter.
     @State
     private var numOfCorrect = 0
+    // Correct boolean.
     @State
     private var correct: Bool = false
-    // Alert variable.
+    // Show game over alert variable.
     @State private var showGameOver = false
     
 
@@ -42,6 +47,7 @@ struct ContentView: View {
         
         VStack {
             Button(action: {
+                // If shown number is in the predetermined primeNumbers array, answer is correct.
                 if (primeNumbers.contains(shownNumber)) {
                     correct = true
                     numOfCorrect += 1
@@ -49,8 +55,8 @@ struct ContentView: View {
                     correct = false
                 }
                 
+                // Increase attempts and change shown number.
                 attempts += 1
-                
                 shownNumber = nextNumber(attempts: attempts)
                 
                 // Check if game should end.
@@ -61,6 +67,7 @@ struct ContentView: View {
             }, label: {
                 Text("PRIME")
             })
+            // Run alert if game is over, reset all values.
             .alert("Game Over!", isPresented: $showGameOver) {
                 Button(action: {
                     shownNumber = generateNumber()
@@ -78,6 +85,7 @@ struct ContentView: View {
         
         VStack {
             Button(action: {
+                // If shown number is not prime, answer is correct.
                 if (primeNumbers.contains(shownNumber)) {
                     correct = false
                 } else {
@@ -85,6 +93,7 @@ struct ContentView: View {
                     numOfCorrect += 1
                 }
                 
+                // Increase the attempts counter and generate a new number to guess.
                 attempts += 1
                 shownNumber = nextNumber(attempts: attempts)
                 
@@ -95,6 +104,7 @@ struct ContentView: View {
             }, label: {
                 Text("NOT PRIME")
             })
+            // Run alert if game is over, reset all values.
             .alert("Game Over!", isPresented: $showGameOver) {
                 Button(action: {
                     shownNumber = generateNumber()
