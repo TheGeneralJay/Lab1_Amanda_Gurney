@@ -41,15 +41,9 @@ struct ContentView: View {
     // Initialize timer.
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    
-
-    
     var body: some View {
         // Display timer up top for easy viewing.
         VStack {
-            Text("TIME")
-                .font(.system(size: 50, weight: .bold))
-                .underline()
             Text("\(timerCounter)")
                 .onReceive(timer) {_ in
                     if timerCounter > 0 && timerOn {
@@ -59,6 +53,7 @@ struct ContentView: View {
                     }
                 }
                 .font(.system(size: 50, weight: .bold))
+                .foregroundStyle(.red)
         }
         .padding(.bottom, 40.0)
         
@@ -70,78 +65,90 @@ struct ContentView: View {
         }
         .padding(.bottom, 40.0)
         
-        VStack {
-            Button(action: {
-                // If shown number is in the predetermined primeNumbers array, answer is correct.
-                if (primeNumbers.contains(shownNumber)) {
-                    correct = true
-                    numOfCorrect += 1
-                } else {
-                    correct = false
-                }
-                
-                // Increase attempts and change shown number.
-                attempts += 1
-                shownNumber = nextNumber(attempts: attempts)
-                
-                // Check if game should end.
-                if (shownNumber == "GAME OVER") {
-                    showGameOver = true
-                }
-                
-            }, label: {
-                Text("PRIME")
-            })
-            // Run alert if game is over, reset all values.
-            .alert("Game Over!", isPresented: $showGameOver) {
+        ZStack {
+            VStack {
                 Button(action: {
-                    shownNumber = generateNumber()
-                    attempts = 0
-                    numOfCorrect = 0
-                    correct = false
+                    // If shown number is in the predetermined primeNumbers array, answer is correct.
+                    if (primeNumbers.contains(shownNumber)) {
+                        correct = true
+                        numOfCorrect += 1
+                    } else {
+                        correct = false
+                    }
+                    // Reset timer if an answer is selected.
+                    timerCounter = 5
+                    
+                    // Increase attempts and change shown number.
+                    attempts += 1
+                    shownNumber = nextNumber(attempts: attempts)
+                    
+                    // Check if game should end.
+                    if (shownNumber == "GAME OVER") {
+                        timerOn = false
+                        showGameOver = true
+                    }
+                    
                 }, label: {
-                    Text("OK")
+                    Text("PRIME")
                 })
-            } message: {
-                Text("You got \(numOfCorrect)/10 answers correct!")
+                .padding(.bottom, 40.0)
+            }
+            .padding(.bottom, 40.0)
+            
+            VStack {
+                Button(action: {
+                    // If shown number is not prime, answer is correct.
+                    if (primeNumbers.contains(shownNumber)) {
+                        correct = false
+                    } else {
+                        correct = true
+                        numOfCorrect += 1
+                    }
+                    // Reset timer if an answer is selected.
+                    timerCounter = 5
+                    
+                    // Increase the attempts counter and generate a new number to guess.
+                    attempts += 1
+                    shownNumber = nextNumber(attempts: attempts)
+                    
+                    // Check if game should end.
+                    if (shownNumber == "GAME OVER") {
+                        timerOn = false
+                        showGameOver = true
+                    }
+                }, label: {
+                    Text("NOT PRIME")
+                })
             }
         }
-        .padding(.bottom, 40.0)
-        
-        VStack {
-            Button(action: {
-                // If shown number is not prime, answer is correct.
-                if (primeNumbers.contains(shownNumber)) {
-                    correct = false
-                } else {
-                    correct = true
-                    numOfCorrect += 1
-                }
-                
-                // Increase the attempts counter and generate a new number to guess.
+        // If timer hits 0, count the attempt as incorrect.
+        .onReceive(timer) {_ in
+            if timerCounter == 0 {
+                timerCounter = 5
+                correct = false
                 attempts += 1
                 shownNumber = nextNumber(attempts: attempts)
                 
                 // Check if game should end.
                 if (shownNumber == "GAME OVER") {
+                    timerOn = false
                     showGameOver = true
                 }
-            }, label: {
-                Text("NOT PRIME")
-            })
-            // Run alert if game is over, reset all values.
-            .alert("Game Over!", isPresented: $showGameOver) {
-                Button(action: {
-                    shownNumber = generateNumber()
-                    attempts = 0
-                    numOfCorrect = 0
-                    correct = false
-                }, label: {
-                    Text("OK")
-                })
-            } message: {
-                Text("You got \(numOfCorrect)/10 answers correct!")
             }
+        }
+        // Run alert if game is over, reset all values.
+        .alert("Game Over!", isPresented: $showGameOver) {
+            Button(action: {
+                shownNumber = generateNumber()
+                attempts = 0
+                numOfCorrect = 0
+                correct = false
+                timerOn = true
+            }, label: {
+                Text("OK")
+            })
+        } message: {
+            Text("You got \(numOfCorrect)/10 answers correct!")
         }
         .padding(.bottom, 40.0)
         
