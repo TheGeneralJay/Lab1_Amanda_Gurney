@@ -156,7 +156,17 @@ struct ContentView: View {
         // Correct / incorrect answers.
         VStack {
             if (attempts != 0) {
-                Text("\(correct)")
+                if (correct) {
+                    Image("correctIcon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 80, height: 80)
+                } else {
+                    Image("incorrectIcon")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 80, height: 80)
+                }
             }
         }
     }
