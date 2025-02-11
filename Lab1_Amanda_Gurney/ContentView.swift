@@ -22,12 +22,16 @@ struct ContentView: View {
     private var shownNumber: String?
     
     var body: some View {
-        ZStack(alignment: .top) {
-            VStack {
-                Text("Prime Number Game")
-                    .font(.largeTitle)
-            }
-            .padding()
+        VStack {
+            // Display the number to guess here.
+            Text(shownNumber ?? "")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+        }
+        .padding(.bottom, 40.0)
+        
+        VStack {
+            
         }
         
         // Show button for starting the game.
@@ -36,12 +40,12 @@ struct ContentView: View {
                 shownNumber = generateNumber()
             }, label: {
                 Text("Start the Game")
+                    .foregroundColor(Color.white)
+                    .fontWeight(.bold)
             })
-        }
-        
-        VStack {
-            // Display the number to guess here.
-            Text(shownNumber ?? "")
+            .buttonStyle(.bordered)
+            .frame(height: 50.00)
+            .background(.gray)
         }
     }
 }
