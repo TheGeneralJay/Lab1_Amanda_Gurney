@@ -44,6 +44,8 @@ struct ContentView: View {
     var body: some View {
         // Display timer up top for easy viewing.
         VStack {
+            Text("TIME REMAINING")
+                .font(.system(size: 30))
             Text("\(timerCounter)")
                 .onReceive(timer) {_ in
                     if timerCounter > 0 && timerOn {
@@ -58,6 +60,9 @@ struct ContentView: View {
         .padding(.bottom, 40.0)
         
         VStack {
+            Text("Is this a prime number?")
+                .font(.title)
+                .fontWeight(.bold)
             // Display the number to guess here.
             Text(shownNumber)
                 .font(.largeTitle)
