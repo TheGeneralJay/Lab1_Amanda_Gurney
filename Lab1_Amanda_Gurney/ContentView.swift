@@ -10,42 +10,71 @@ import SwiftUI
 struct ContentView: View {
     
     @State
-    private var primeNumbers = [
-                                 2, 3, 5, 7, 11,
-                                 13, 17, 19, 23, 29,
-                                 31, 37, 41, 43, 47,
-                                 53, 59, 61, 67, 71,
-                                 73, 79, 83, 89, 97
+    private var primeNumbers: [String] = [
+                                 "2", "3", "5", "7", "11",
+                                 "13", "17", "19", "23", "29",
+                                 "31", "37", "41", "43", "47",
+                                 "53", "59", "61", "67", "71",
+                                 "73", "79", "83", "89", "97"
     ]
     
     @State
-    private var shownNumber: String?
+    private var shownNumber: String = generateNumber()
+    
+    @State
+    private var attempts = 0
+    
+    @State
+    private var guess: String?
+    
+    @State
+    private var correct: Bool = false
     
     var body: some View {
         VStack {
             // Display the number to guess here.
-            Text(shownNumber ?? "")
+            Text(shownNumber)
                 .font(.largeTitle)
                 .fontWeight(.bold)
         }
         .padding(.bottom, 40.0)
         
         VStack {
-            
+            Button(action: {
+                if (primeNumbers.contains(shownNumber)) {
+                    correct = true
+                } else {
+                    correct = false
+                }
+                
+                attempts += 1
+            }, label: {
+                Text("PRIME")
+            })
         }
+        .padding(.bottom, 40.0)
         
-        // Show button for starting the game.
         VStack {
             Button(action: {
-                shownNumber = generateNumber()
+                if (primeNumbers.contains(shownNumber)) {
+                    correct = false
+                } else {
+                    correct = true
+                }
+                
+                attempts += 1
             }, label: {
-                Text("Start the Game")
-                    .foregroundColor(Color.white)
-                    .fontWeight(.bold)
+                Text("NOT PRIME")
             })
-            .buttonStyle(.bordered)
-            .frame(height: 50.00)
-            .background(.gray)
+        }
+        .padding(.bottom, 40.0)
+        
+        
+        // Correct / incorrect answers.
+        VStack {
+            if (attempts != 0) {
+                Text("\(correct)")
+            }
         }
     }
 }
