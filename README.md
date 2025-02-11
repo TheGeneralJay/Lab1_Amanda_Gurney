@@ -1,5 +1,5 @@
 # Mobile Development | Lab Assignment 1
-
+## Amanda Gurney | 101443253
 ### Instructions
 - A set of numbers appear on screen randomly between 1-100.
 - The user is able to guess whether or not the number shown is a prime number or not.
