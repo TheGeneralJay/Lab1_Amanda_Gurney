@@ -32,11 +32,36 @@ struct ContentView: View {
     @State
     private var correct: Bool = false
     // Show game over alert variable.
-    @State private var showGameOver = false
+    @State
+    private var showGameOver = false
+    // Timer variables.
+    @State private var timerCounter = 5
+    @State private var timerOn = true
+    
+    // Initialize timer.
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+    
     
 
     
     var body: some View {
+        // Display timer up top for easy viewing.
+        VStack {
+            Text("TIME")
+                .font(.system(size: 50, weight: .bold))
+                .underline()
+            Text("\(timerCounter)")
+                .onReceive(timer) {_ in
+                    if timerCounter > 0 && timerOn {
+                        timerCounter -= 1
+                    } else {
+                        timerOn = false
+                    }
+                }
+                .font(.system(size: 50, weight: .bold))
+        }
+        .padding(.bottom, 40.0)
+        
         VStack {
             // Display the number to guess here.
             Text(shownNumber)
